@@ -1,7 +1,9 @@
+import { useNavigate } from "react-router-dom";
 import Input from "../../components/Input";
 import { useAuthMutation } from "../../hooks/mutation";
 
 function LogInPage() {
+  const navigate = useNavigate();
   const { logInMutation } = useAuthMutation();
   const handleLogin = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
@@ -32,6 +34,12 @@ function LogInPage() {
           type="submit"
         >
           로그인
+        </button>
+        <button
+          className="border p-3 rounded-md hover:brightness-50 transition-all"
+          onClick={() => navigate("/signup")}
+        >
+          회원가입
         </button>
       </form>
     </div>
