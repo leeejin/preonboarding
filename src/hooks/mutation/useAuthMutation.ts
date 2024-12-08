@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import { AUTH } from "../../constants/querykey";
+import { useToast } from "../../contexts/toast.context";
 import { TLoginUser, TUser } from "../../types/user";
 import useAuthStore from "../../zustand/useAuth";
 
@@ -14,17 +15,18 @@ interface CustomError extends Error {
 const useAuthMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const toast = useToast();
   const { logIn, accessToken } = useAuthStore();
   //회원가입
   const { mutate: signUpMutation } = useMutation({
     mutationFn: (signUpData: TUser) => api.user.registerUser(signUpData),
     onSuccess: async () => {
-      alert("회원가입에 성공하였습니다");
+      toast.on("회원가입에 성공하였습니다");
       navigate("/login");
     },
     onError: (error: Error) => {
       const customError = error as CustomError;
-      alert(customError.data?.message || "회원가입에 실패하였습니다");
+      toast.on(customError.data?.message || "회원가입에 실패하였습니다");
     },
   });
   //로그인
@@ -37,7 +39,7 @@ const useAuthMutation = () => {
     },
     onError: (error: Error) => {
       const customError = error as CustomError;
-      alert(customError.data?.message || "로그인에 실패하였습니다");
+      toast.on(customError.data?.message || "로그인에 실패하였습니다");
     },
   });
 
@@ -47,11 +49,11 @@ const useAuthMutation = () => {
       api.user.updateUser({ userData, accessToken }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [AUTH, accessToken] });
-      alert("회원정보가 업데이트되었습니다");
+      toast.on("회원정보가 업데이트되었습니다");
     },
     onError: (error: Error) => {
       const customError = error as CustomError;
-      alert(customError.data?.message || "업데이트 실패하였습니다");
+      toast.on(customError.data?.message || "업데이트 실패하였습니다");
     },
   });
   return {
