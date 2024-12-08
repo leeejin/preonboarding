@@ -42,17 +42,11 @@ function SignUpPage() {
           placeholder="닉네임을 입력해주세요"
         />
 
-        <Button
-          className="border p-3 rounded-md hover:brightness-50 transition-all"
-          type="submit"
-        >
+        <Button intent={"white"} type="submit">
           회원가입
         </Button>
 
-        <Button
-          className="border p-3 rounded-md hover:brightness-50 transition-all"
-          onClick={handleLocation}
-        >
+        <Button intent={"white"} onClick={handleLocation}>
           로그인
         </Button>
       </form>
