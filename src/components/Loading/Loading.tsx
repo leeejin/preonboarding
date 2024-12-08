@@ -1,4 +1,5 @@
 import LoadingIcon from "../../../public/icon-loading.png";
+
 const Loading = () => {
   return (
     <div className="absolute top-1/2 left-1/2">
