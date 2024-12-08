@@ -17,6 +17,10 @@ function SignUpPage() {
 
     signUpMutation({ id, password, nickname });
   };
+
+  const handleLocation = () => {
+    navigate("/login");
+  };
   return (
     <div>
       <form onSubmit={handleSignup} className="flex flex-col gap-5">
@@ -47,7 +51,7 @@ function SignUpPage() {
 
         <Button
           className="border p-3 rounded-md hover:brightness-50 transition-all"
-          onClick={() => navigate("/login")}
+          onClick={handleLocation}
         >
           로그인
         </Button>
