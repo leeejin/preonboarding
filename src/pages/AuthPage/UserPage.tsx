@@ -1,5 +1,4 @@
 import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
-import DefaultUserImage from "../../../public/default-user-profile.svg";
 import Button from "../../components/Button";
 import Input from "../../components/Input";
 import { useAuthMutation } from "../../hooks/mutation";
@@ -10,7 +9,7 @@ function UserPage() {
   const { userInfoMutation } = useAuthMutation();
 
   const [file, setFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string>(DefaultUserImage);
+  const [preview, setPreview] = useState<string>("");
   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   useEffect(() => {
