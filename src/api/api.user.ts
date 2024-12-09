@@ -1,5 +1,5 @@
-import { AxiosInstance } from "axios";
-import { TLoginUser, TUser } from "../types/user";
+import { AxiosError, AxiosInstance } from "axios";
+import { TAccessToken, TLoginUser, TUser } from "../types/user";
 
 class UserAPI {
   #client;
@@ -8,7 +8,7 @@ class UserAPI {
     this.#client = client;
   }
 
-  async getUser(accessToken: string | null) {
+  async getUser(accessToken: TAccessToken) {
     try {
       const resposne = await this.#client.get("/user", {
         headers: { Authorization: `Bearer ${accessToken}` },
@@ -18,7 +18,9 @@ class UserAPI {
 
       return data;
     } catch (error) {
-      console.error(error);
+      const { response } = error as unknown as AxiosError;
+      if (response) throw { status: response.status, data: response.data };
+      else throw error;
     }
   }
 
@@ -29,7 +31,9 @@ class UserAPI {
 
       return data;
     } catch (error) {
-      console.error(error);
+      const { response } = error as unknown as AxiosError;
+      if (response) throw { status: response.status, data: response.data };
+      else throw error;
     }
   }
 
@@ -43,7 +47,9 @@ class UserAPI {
 
       return data;
     } catch (error) {
-      console.error(error);
+      const { response } = error as unknown as AxiosError;
+      if (response) throw { status: response.status, data: response.data };
+      else throw error;
     }
   }
 
@@ -52,7 +58,7 @@ class UserAPI {
     accessToken,
   }: {
     userData: FormData;
-    accessToken: string | null;
+    accessToken: TAccessToken;
   }) {
     try {
       const response = await this.#client.patch("/profile", userData, {
@@ -65,22 +71,9 @@ class UserAPI {
 
       return data;
     } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async logOutUser(accessToken: string | null) {
-    try {
-      const response = await this.#client.delete("/login", {
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-      });
-      const data = response.data;
-
-      return data;
-    } catch (error) {
-      console.error(error);
+      const { response } = error as unknown as AxiosError;
+      if (response) throw { status: response.status, data: response.data };
+      else throw error;
     }
   }
 }

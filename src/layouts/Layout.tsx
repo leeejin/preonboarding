@@ -3,12 +3,12 @@ import Menubar from "./Menubar";
 
 function Layout() {
   return (
-    <main>
+    <>
       <Menubar />
-      <div className="container m-auto p-5">
+      <main className="container m-auto p-5">
         <Outlet />
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
 

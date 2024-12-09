@@ -2,22 +2,31 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useNavigate } from "react-router-dom";
 import api from "../../api/api";
 import { AUTH } from "../../constants/querykey";
+import { useToast } from "../../contexts/toast.context";
 import { TLoginUser, TUser } from "../../types/user";
 import useAuthStore from "../../zustand/useAuth";
+
+interface CustomError extends Error {
+  data?: {
+    message?: string;
+  };
+}
 
 const useAuthMutation = () => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const { logIn, logOut, accessToken } = useAuthStore();
+  const toast = useToast();
+  const { logIn, accessToken } = useAuthStore();
   //회원가입
   const { mutate: signUpMutation } = useMutation({
     mutationFn: (signUpData: TUser) => api.user.registerUser(signUpData),
     onSuccess: async () => {
-      alert("회원가입에 성공하였습니다");
+      toast.on("회원가입에 성공하였습니다");
       navigate("/login");
     },
-    onError: () => {
-      alert("회원가입에 실패하였습니다");
+    onError: (error: Error) => {
+      const customError = error as CustomError;
+      toast.on(customError.data?.message || "회원가입에 실패하였습니다");
     },
   });
   //로그인
@@ -28,18 +37,9 @@ const useAuthMutation = () => {
       logIn(data.accessToken);
       navigate("/");
     },
-    onError: () => {
-      alert("로그인에 실패하였습니다");
-    },
-  });
-
-  //로그아웃
-  const { mutate: logOutMutation } = useMutation({
-    mutationFn: () => api.user.logOutUser(accessToken),
-    onSuccess: () => {
-      queryClient.removeQueries({ queryKey: [AUTH, accessToken] });
-      logOut();
-      alert("로그아웃되었습니다");
+    onError: (error: Error) => {
+      const customError = error as CustomError;
+      toast.on(customError.data?.message || "로그인에 실패하였습니다");
     },
   });
 
@@ -49,16 +49,16 @@ const useAuthMutation = () => {
       api.user.updateUser({ userData, accessToken }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [AUTH, accessToken] });
-      alert("회원정보가 업데이트되었습니다");
+      toast.on("회원정보가 업데이트되었습니다");
     },
-    onError: () => {
-      alert("업데이트 실패하였습니다");
+    onError: (error: Error) => {
+      const customError = error as CustomError;
+      toast.on(customError.data?.message || "업데이트 실패하였습니다");
     },
   });
   return {
     signUpMutation,
     logInMutation,
-    logOutMutation,
     userInfoMutation,
   };
 };

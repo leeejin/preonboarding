@@ -1,12 +1,12 @@
 import Button from "../components/Button/Button";
-import { useAuthMutation } from "../hooks/mutation";
 
 import useAuthStore from "../zustand/useAuth";
 
 function Menubar() {
-  const { logOutMutation } = useAuthMutation();
+  const { logOut } = useAuthStore();
   const { accessToken } = useAuthStore();
-  const handleLogOut = () => logOutMutation();
+  const handleLogOut = () => logOut();
+
   return (
     <div className="flex flex-row gap-5 p-4 w-full bg-sky-500">
       <Button to="/">홈</Button>

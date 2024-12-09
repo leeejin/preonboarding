@@ -6,7 +6,7 @@ interface ProtectRouteProps {
 }
 
 const ProtectRoute: React.FC<ProtectRouteProps> = ({ element }) => {
-  const accessToken = useAuthStore();
+  const { accessToken } = useAuthStore();
   return accessToken ? element : <MainPage />;
 };
 

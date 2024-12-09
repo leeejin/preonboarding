@@ -1,10 +1,23 @@
+import { cva, VariantProps } from "class-variance-authority";
 import { forwardRef, InputHTMLAttributes, useId } from "react";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   title?: string;
 }
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+type InputVariantProps = VariantProps<typeof inputVariant>;
+
+const inputVariant = cva("p-3 border-[1.5px] border-gray-300 rounded-md", {
+  variants: {
+    intent: {
+      primary: "outline-sky-500",
+    },
+    defaultVariants: {
+      intent: "primary",
+    },
+  },
+});
+const Input = forwardRef<HTMLInputElement, InputProps & InputVariantProps>(
   ({ value, title, ...props }, ref) => {
     const id = useId();
     return (

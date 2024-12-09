@@ -4,4 +4,6 @@ export type TUser = {
   password: FormDataEntryValue | null;
   nickname: FormDataEntryValue | null;
 };
+
+export type TAccessToken = string | null;
 export type TLoginUser = Omit<TUser, "nickname" | "avatar">;
