@@ -6,6 +6,7 @@ function Menubar() {
   const { logOut } = useAuthStore();
   const { accessToken } = useAuthStore();
   const handleLogOut = () => logOut();
+
   return (
     <div className="flex flex-row gap-5 p-4 w-full bg-sky-500">
       <Button to="/">홈</Button>
